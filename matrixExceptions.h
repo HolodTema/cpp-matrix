@@ -34,4 +34,10 @@ class InvalidMatrixIndexException: public std::exception {
 	}
 };
 
+class InvalidMatrixAdditionException: public std::exception {
+	const char* what() const noexcept override {
+		return "Error: to add one matrix to another, these matrices must be of the same linear space\n";
+	}
+};
+
 #endif

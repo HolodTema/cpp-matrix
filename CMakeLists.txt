@@ -6,4 +6,6 @@ add_executable(main main.cpp
 	Matrix.h
 	Matrix.cpp
 	matrixExceptions.h
+	MatrixLinearSpace.h
+	MatrixLinearSpace.cpp
 )

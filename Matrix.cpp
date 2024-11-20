@@ -1,6 +1,9 @@
 #include "Matrix.h"
 #include <iostream>
+#include <cstring>
+#include <stdexcept>
 #include "matrixExceptions.h"
+#include "MatrixLinearSpace.h"
 
 bool Matrix::isSquare() const noexcept {
 	return columns_ == rows_;
@@ -51,6 +54,42 @@ void Matrix::printInfo() const noexcept {
 		}
 		std::cout << "\n";
 	}
+}
+
+
+Matrix operator+(const Matrix &matrix1, const Matrix &matrix2) {
+	MatrixLinearSpace space1 = matrix1.getMatrixLinearSpace();
+	MatrixLinearSpace space2 = matrix2.getMatrixLinearSpace();
+
+	if (space1 != space2) {
+		throw InvalidMatrixAdditionException();
+	}
+
+	int *data1 = matrix1.getData();
+	int *data2 = matrix2.getData();
+
+	unsigned int resultDataLen = matrix1.getAmountElements();
+	
+	int *resultData;
+	try {
+		resultData = new int[resultDataLen];
+	}
+	catch(std::bad_alloc &e) {
+		throw UnableToAllocateMatrixException();
+	}
+
+	for (int i = 0; i<resultDataLen; ++i) {
+		resultData[i] = data1[i] + data2[i];
+	}
+
+	char *resultName = strcat(matrix1.getName(), "+");
+	resultName = strcat(resultName, matrix2.getName());
+
+	return Matrix(resultName, matrix1.getRows(), matrix1.getColumns(), resultData);
+}
+
+MatrixLinearSpace Matrix::getMatrixLinearSpace() const noexcept {
+	return MatrixLinearSpace(rows_, columns_);
 }
 
 

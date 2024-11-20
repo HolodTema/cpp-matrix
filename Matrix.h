@@ -3,7 +3,9 @@
 #define MATRIX_H
 
 #include "matrixExceptions.h"
+#include "MatrixLinearSpace.h"
 #include <stdexcept>
+
 class Matrix {
 private:
 	char *name_;
@@ -46,12 +48,24 @@ public:
 		delete[] matrix_;
 	}
 
+	char * getName() const noexcept {
+		return name_;
+	}
+
 	unsigned int getRows() const noexcept {
 		return rows_;
 	}
 
 	unsigned int getColumns() const noexcept {
 		return columns_;
+	}
+
+	unsigned int getAmountElements() const noexcept {
+		return rows_ * columns_;
+	}
+
+	int * getData() const noexcept {
+		return matrix_;
 	}
 
 	bool isSquare() const noexcept;
@@ -63,6 +77,8 @@ public:
 	int getElement(unsigned int column, unsigned int row) const noexcept;
 
 	void printInfo() const noexcept;
+
+	MatrixLinearSpace getMatrixLinearSpace() const noexcept;
 
 };
 #endif
